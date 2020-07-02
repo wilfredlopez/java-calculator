@@ -36,7 +36,6 @@ public class App {
             System.out.print(prompt);
             value = scanner.nextDouble();
             if (value >= min && value <= max) {
-
                 break;
             }
             scanner.close();
@@ -46,10 +45,18 @@ public class App {
         return value;
     }
 
+    private static short calculateNumberOfPayments(byte years) {
+        return (short) (years * MONTHS_IN_YEAR);
+    }
+
+    private static float calculateMontlyInterest(float anualInterest) {
+        return anualInterest / PERCENT / MONTHS_IN_YEAR;
+    }
+
     public static double calculateBalance(int principal, float anualInterest, byte years, short numberOfPaymentsMade) {
 
-        final float montlyInterest = anualInterest / PERCENT / MONTHS_IN_YEAR;
-        final short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
+        final float montlyInterest = calculateMontlyInterest(anualInterest);
+        final short numberOfPayments = calculateNumberOfPayments(years);
         double balance = principal
                 * (Math.pow(1 + montlyInterest, numberOfPayments) - Math.pow(1 + montlyInterest, numberOfPaymentsMade))
                 / (Math.pow(1 + montlyInterest, numberOfPayments) - 1);
@@ -58,8 +65,8 @@ public class App {
     }
 
     public static double calculateMorgage(int principal, float anualInterest, byte years) {
-        final short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
-        final float montlyInterest = anualInterest / PERCENT / MONTHS_IN_YEAR;
+        final short numberOfPayments = calculateNumberOfPayments(years);
+        final float montlyInterest = calculateMontlyInterest(anualInterest);
         final double morgage = principal * (montlyInterest * Math.pow(1 + montlyInterest, numberOfPayments))
                 / (Math.pow(1 + montlyInterest, numberOfPayments) - 1);
         return morgage;
